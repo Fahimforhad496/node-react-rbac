@@ -8,18 +8,18 @@ const columns = [
         key: "name",
         render: (obj) => {
             console.log(obj);
-            return <Link to={`/roles/list/${obj.key}`}>{obj.name}</Link>;
+            return <Link to={`/resources/list/${obj.key}`}>{obj.name}</Link>;
         },
     },
     {
-        title: "Alias",
-        dataIndex: "alias",
-        key: "alias",
+        title: "Resource Type",
+        dataIndex: "type",
+        key: "type",
     },
     {
         title: "Action",
         key: "action",
-        render: (obj) => (
+        render: () => (
             <Space size="middle">
                 <a href="/#">Delete</a>
             </Space>
@@ -30,19 +30,18 @@ const columns = [
 const data = [
     {
         key: "1",
-        name: "Admin",
-        alias: "admin"
-        
+        name: "dashboard",
+        type: "dashboard"
     },
     {
         key: "2",
-        name: "Super Admin",
-        alias:"super-admin"
+        name: "Customer",
+        type: "customer"
     },
     {
         key: "3",
-        name: "Sales Team",
-        alias:"sales-team"
+        name: "Role",
+        type: "role"
     },
 ];
 const CustomerList = () => {
