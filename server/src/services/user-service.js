@@ -1,44 +1,50 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-
-const userSchema = new mongoose.Schema({
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
-    username: { type: String, required: true, unique: true },
-    organization: { type: String, required: true },
-    phoneNumber: { type: String, required: true, unique: true },
-    email: { type: String, required: true, unique: true },
-    roleName: { type: String, required: true },
-    roleId: { type: String, required: true },
-    roleAlias: { type: String, required: true },
-    description: { type: String },
-    passwordHash: { type: String, required: true },
-    createdAt: { type: Date, required: true },
-    updatedAt: { type: Date, required: true },
-});
-
-const User = mongoose.model("User", userSchema);
-
-async function getPasswordHash(password) {
-        return await bcrypt.hash(password, 10);
-}
+const models = require("../models/data-models");
+const { UserViewModel } = require("../models/view-models/user-view-model");
 
 
-User.createNew = async (user) => {
-        user._id = new mongoose.Types.ObjectId();
-        const model = new User(user);
-        let hash = await getPasswordHash(user.password);
-        model.passwordHash = hash;
-        return model;
+const Model = models.User;
+const getAll = async () => {
+    const items = await Model.find();
+    let viewModels = items.map((item) => UserViewModel.convert(item));
+    return viewModels;
 };
 
-User.getHashedPassword = async (newPassword) => {
-        return await getPasswordHash(newPassword);
-}
+const save = async (user) => {
+    const model = await Model.createNew(user);
+    const savedItem = await model.save();
+    return savedItem._id;
+};
 
-User.setPassword = async (model, newPassword) => {
-        model.passwordHash = await getPasswordHash(newPassword);
-        return model;
-}
+const update = async (user) => {
+    const id = user._id;
+    let model = await Model.findById(id);
+    if (model) {
+        model.firstName = user.firstName;
+        model.lastName = user.lastName;
+        model.email = user.email;
+        model.phoneNumber = user.phoneNumber;
+        model.updatedAt = Date.now().toString();
+        model.save();
+        return model._id;
+    }
 
-module.exports = User;
+    throw new NotFound("User not found by the id: " + id);
+};
+
+const deleteById = async (id) => {
+    let model = await Model.findById(id);
+    if (model) {
+        let result = await Model.deleteOne({ _id: id });
+        return result;
+    }
+
+    throw new NotFound("User not found by the id: " + id);
+};
+
+const getById = async (id) => {
+    let model = await Model.findById(id);
+    let viewModel = UserViewModel.convert(model);
+    return viewModel;
+};
+
+module.exports = { getAll, save, update, deleteById, getById };

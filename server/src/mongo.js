@@ -7,7 +7,7 @@ const connectWithDb = () => {
         if (err) {
             console.error(err);
         } else {
-            console.log(db, "database connection established");
+            console.log("database connection established");
         }
     });
 };
