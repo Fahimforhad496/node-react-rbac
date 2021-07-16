@@ -8,6 +8,8 @@ import CustomerAdd from "../Pages/Customer/CustomerAdd";
 import CustomerList from "../Pages/Customer/CustomerList";
 import CustomerDetail from "../Pages/Customer/CustomerDetail";
 import CustomerEdit from "../Pages/Customer/CustomerEdit";
+import RoleAdd from "../Pages/Role/RoleAdd";
+import RoleList from "../Pages/Role/RoleList";
 
 const { Header, Sider, Footer, Content } = Layout;
 const { SubMenu } = Menu;
@@ -43,6 +45,14 @@ const MainLayout = () => {
                                 <Link to="/customers/list">Customer List</Link>
                             </Menu.Item>
                         </SubMenu>
+                        <SubMenu key="sub3" title="Role">
+                            <Menu.Item key="4">
+                                <Link to="/roles/add">Add Role</Link>
+                            </Menu.Item>
+                            <Menu.Item key="5">
+                                <Link to="/roles/list">Role List</Link>
+                            </Menu.Item>
+                        </SubMenu>
                     </Menu>
                 </Sider>
                 <Layout style={{ padding: "6px" }}>
@@ -69,6 +79,8 @@ const MainLayout = () => {
                             component={CustomerDetail}
                         />
                         <Route path="/customers/edit/:id" component={CustomerEdit} />
+                        <Route path="/roles/add" component={RoleAdd} />
+                        <Route path="/roles/list" component={RoleList} />
                     </Content>
                 </Layout>
             </Layout>
