@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+
 import { useParams } from "react-router-dom";
 import { Card } from "antd";
 import { EditOutlined } from "@ant-design/icons";
-import { Link, useHistory } from "react-router-dom";
+import {  useHistory } from "react-router-dom";
 
-const axios = require("axios").default;
+
 
 const CustomerDetail = () => {
     let { id } = useParams();

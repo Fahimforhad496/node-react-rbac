@@ -1,5 +1,4 @@
-import { useParams } from "react-router-dom";
-import { Form, Input, Button,PageHeader, Divider } from "antd";
+import { Form, Input, Button, PageHeader, Divider } from "antd";
 
 const layout = {
     labelCol: {
@@ -11,7 +10,6 @@ const layout = {
 };
 
 const CustomerEdit = () => {
-    const { id } = useParams();
     return (
         <Form {...layout} name="nest-messages">
             <PageHeader title="Edit Customer" />

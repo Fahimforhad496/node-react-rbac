@@ -1,4 +1,4 @@
-import { Table, Tag, Space } from "antd";
+import { Table, Space } from "antd";
 import { Link } from "react-router-dom";
 
 const columns = [

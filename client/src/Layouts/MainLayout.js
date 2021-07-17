@@ -1,108 +1,124 @@
 import React from "react";
 import { Layout, Menu } from "antd";
-import { Route, Link } from "react-router-dom";
+import { Route, Link, Switch, Redirect } from "react-router-dom";
 import Dashboard from "../Pages/Dashboard";
-import ProductAdd from "../Pages/Product/ProductAdd";
-import ProductList from "../Pages/Product/ProductList";
-import CustomerAdd from "../Pages/Customer/CustomerAdd";
-import CustomerList from "../Pages/Customer/CustomerList";
-import CustomerDetail from "../Pages/Customer/CustomerDetail";
-import CustomerEdit from "../Pages/Customer/CustomerEdit";
-import RoleAdd from "../Pages/Role/RoleAdd";
-import RoleList from "../Pages/Role/RoleList";
-import UserAdd from "../Pages/User/UserAdd";
-import UserList from "../Pages/User/UserList";
-import UserEdit from "../Pages/User/UserEdit";
-import UserDetail from "../Pages/User/UserDetail";
-import ResourceAdd from "../Pages/Resource/ResourceAdd";
-import ResourceList from "../Pages/Resource/ResourceList";
-import PermissionAdd from "../Pages/Permission/PermissionAdd";
-import PermissionList from "../Pages/Permission/PermissionList";
+import { ProductAdd, ProductList } from "../Pages/Product";
+import { CustomerAdd, CustomerEdit, CustomerList, CustomerDetail } from "../Pages/Customer";
+import { RoleAdd, RoleList } from "../Pages/Role";
+import { UserAdd, UserList, UserEdit, UserDetail } from "../Pages/User";
+import { ResourceAdd, ResourceList} from "../Pages/Resource"
+import { PermissionAdd, PermissionList } from "../Pages/Permission";
+import { Login } from './../Pages/Authentication/Login';
+import { useAuth } from '../Hooks/context';
+import { AppProtectedComponent } from './../Components/AppProtectedComponent';
 
-const { Header, Sider, Footer, Content } = Layout;
-const { SubMenu } = Menu;
-const MainLayout = () => {
+const { Sider, Content } = Layout;
+const { SubMenu, Item } = Menu;
+
+export const AuthLayout = () => {
+    const [auth] = useAuth();
+
     return (
         <Layout>
-            <Header className="header">
-                <h1>This is Header</h1>
-            </Header>
+            <Layout style={{ minHeight: "90vh" }}>
+                <Content className='main-content'>
+                    <Switch>
+                        <Route exact path="/login" component={Login} />
+                        <Route
+                            render={({ location }) => {
+                                console.log(auth, location);
+                                return auth.isAuthenticated ? (
+                                    <Redirect to="/dashboard" />
+                                ) : (
+                                    <Redirect
+                                        to={{
+                                            pathname: "/login",
+                                            state: { from: location }
+                                        }}
+                                    />
+                                )
+                            }}
+                        />
+                    </Switch>
+                </Content>
+            </Layout>
+        </Layout>
+    );
+}
+
+export const MainLayout = () => {
+    return (
+        <Layout>
             <Layout style={{ minHeight: "90vh" }}>
                 <Sider width={300} style={{ background: "#fff" }}>
                     <Menu
                         mode="inline"
                         style={{ height: "90vh", borderRight: 5 }}
                     >
-                        <Menu.Item key="1">
+                        <AppProtectedComponent key="dashboard" component={Item} name='dashboard' type='menu'>
                             <Link to="/">Dashboard</Link>
-                        </Menu.Item>
-                        <SubMenu key="sub1" title="Product">
-                            <Menu.Item key="2">
+                        </AppProtectedComponent>
+                        <AppProtectedComponent key="product" title="Product" component={SubMenu} name='product' type='menu'>
+                            <Item key="product-add">
                                 <Link to="/products/add">Add Product</Link>
-                            </Menu.Item>
-                            <Menu.Item key="3">
+                            </Item>
+                            <Item key="product-list">
                                 <Link to="/products/list">Product List</Link>
-                            </Menu.Item>
-                        </SubMenu>
-                        <SubMenu key="sub2" title="Customer">
-                            <Menu.Item key="4">
+                            </Item>
+                        </AppProtectedComponent>
+                        <SubMenu key="customer" title="Customer">
+                            <AppProtectedComponent key="customer-add" component={Item} name='customer-add' type='menu'>
                                 <Link to="/customers/add">Add Customer</Link>
-                            </Menu.Item>
-                            <Menu.Item key="5">
+                            </AppProtectedComponent>
+                            <Item key="customer-list">
                                 <Link to="/customers/list">Customer List</Link>
-                            </Menu.Item>
+                            </Item>
                         </SubMenu>
-                        <SubMenu key="sub3" title="Role">
-                            <Menu.Item key="6">
+                        <AppProtectedComponent key="role" title="Role" component={SubMenu} name='role' type='menu'>
+                            <Menu.Item key="role-add">
                                 <Link to="/roles/add">Add Role</Link>
                             </Menu.Item>
-                            <Menu.Item key="7">
+                            <Menu.Item key="role-list">
                                 <Link to="/roles/list">Role List</Link>
                             </Menu.Item>
-                        </SubMenu>
-                        <SubMenu key="sub4" title="User">
-                            <Menu.Item key="8">
+                        </AppProtectedComponent>
+                        <AppProtectedComponent key="user" title="User" component={SubMenu} name='user' type='menu'>
+                            <Menu.Item key="user-add">
                                 <Link to="/users/add">Add User</Link>
                             </Menu.Item>
-                            <Menu.Item key="9">
+                            <Menu.Item key="user-list">
                                 <Link to="/users/list">User List</Link>
                             </Menu.Item>
-                        </SubMenu>
-                        <SubMenu key="sub5" title="Resource">
-                            <Menu.Item key="10">
+                        </AppProtectedComponent>
+                        <AppProtectedComponent key="resource" title="Resource" component={SubMenu} name='resource' type='menu'>
+                            <Menu.Item key="resource-add">
                                 <Link to="/resources/add">Add Resource</Link>
                             </Menu.Item>
-                            <Menu.Item key="11">
+                            <Menu.Item key="resource-list">
                                 <Link to="/resources/list">Resource List</Link>
                             </Menu.Item>
-                        </SubMenu>
-                        <SubMenu key="sub6" title="Permission">
-                            <Menu.Item key="12">
+                        </AppProtectedComponent>
+                        <AppProtectedComponent key="permission" title="Permission" component={SubMenu} name='permission' type='menu'>
+                            <Menu.Item key="permission-add">
                                 <Link to="/permissions/add">
                                     Add Permission
                                 </Link>
                             </Menu.Item>
-                            <Menu.Item key="13">
+                            <Menu.Item key="permission-list">
                                 <Link to="/permissions/list">
                                     Permission List
                                 </Link>
                             </Menu.Item>
-                        </SubMenu>
+                        </AppProtectedComponent>
                     </Menu>
                 </Sider>
+
                 <Layout style={{ padding: "6px" }}>
-                    <Content
-                        style={{
-                            background: "#fff",
-                            padding: 24,
-                            margin: 0,
-                            minHeight: 800,
-                        }}
-                    >
-                        <Route exact path="/" component={Dashboard} />
-                        <Route path="/products/add" component={ProductAdd} />
-                        <Route path="/products/list" component={ProductList} />
-                        <Route path="/customers/add" component={CustomerAdd} />
+                    <Content className="main-content">
+                        <Route exact path="/dashboard" component={Dashboard} name='dashboard' type='menu' />
+                        <Route exact path="/products/add" component={ProductAdd} />
+                        <Route exact path="/products/list" component={ProductList} />
+                        <Route exact path="/customers/add" component={CustomerAdd} />
                         <Route
                             exact
                             path="/customers/list"
@@ -114,38 +130,40 @@ const MainLayout = () => {
                             component={CustomerDetail}
                         />
                         <Route
+                            exact
                             path="/customers/edit/:id"
                             component={CustomerEdit}
                         />
-                        <Route path="/roles/add" component={RoleAdd} />
-                        <Route path="/roles/list" component={RoleList} />
-                        <Route path="/users/add" component={UserAdd} />
+                        <Route exact path="/roles/add" component={RoleAdd} />
+                        <Route exact path="/roles/list" component={RoleList} />
+                        <Route exact path="/users/add" component={UserAdd} />
                         <Route exact path="/users/list" component={UserList} />
-                        <Route path="/users/edit/:id" component={UserEdit} />
+                        <Route exact path="/users/edit/:id" component={UserEdit} />
                         <Route
                             exact
                             path="/users/list/:id"
                             component={UserDetail}
                         />
-                        <Route path="/resources/add" component={ResourceAdd} />
+                        <Route exact path="/resources/add" component={ResourceAdd} />
                         <Route
+                            exact
                             path="/resources/list"
                             component={ResourceList}
                         />
                         <Route
+                            exact
                             path="/permissions/add"
                             component={PermissionAdd}
                         />
                         <Route
+                            exact
                             path="/permissions/list"
                             component={PermissionList}
                         />
+                        <Route exact path="/" component={Dashboard} />
                     </Content>
                 </Layout>
             </Layout>
-            <Footer />
         </Layout>
     );
 };
-
-export default MainLayout;
