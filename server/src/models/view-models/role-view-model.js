@@ -6,4 +6,4 @@ class RoleViewModel {
     }
 }
 
-module.exports = RoleViewModel;
+module.exports.RoleViewModel = RoleViewModel;

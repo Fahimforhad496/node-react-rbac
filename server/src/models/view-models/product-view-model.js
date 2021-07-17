@@ -6,4 +6,4 @@ class ProductViewModel {
     }
 }
 
-module.exports = ProductViewModel;
+module.exports.ProductViewModel = ProductViewModel;

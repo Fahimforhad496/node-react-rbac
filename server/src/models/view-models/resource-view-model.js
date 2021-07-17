@@ -6,4 +6,4 @@ class ResourceViewModel {
     }
 }
 
-module.exports = ResourceViewModel;
+module.exports.ResourceViewModel = ResourceViewModel;

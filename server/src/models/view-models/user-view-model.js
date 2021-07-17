@@ -7,4 +7,4 @@ class UserViewModel {
 
 }
 
-module.exports = UserViewModel;
+module.exports.UserViewModel = UserViewModel;

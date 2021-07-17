@@ -6,4 +6,4 @@ class CustomerViewModel {
     }
 }
 
-module.exports = CustomerViewModel;
+module.exports.CustomerViewModel = CustomerViewModel;

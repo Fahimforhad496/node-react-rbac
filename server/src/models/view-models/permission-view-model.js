@@ -6,4 +6,4 @@ class PermissionViewModel {
     }
 }
 
-module.exports = PermissionViewModel;
+module.exports.PermissionViewModel = PermissionViewModel;
